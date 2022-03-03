@@ -11,7 +11,7 @@ import {
   enableValidation,
 } from "../components/validate.js";
 
-import { initialCards } from "../components/card.js";
+// import { initialCards } from "../components/card.js";
 
 import {
   openAvatarPopup,
@@ -45,6 +45,14 @@ import {
   imageOpen,
   signImage,
 } from "../components/constants.js";
+
+import {
+  config,
+  parseResponce,
+  getCards,
+  postCard,
+  deleteCard,
+} from "../components/api.js";
 
 import {
   openPopup,
@@ -82,3 +90,14 @@ document
 popupFormAvatar.addEventListener("submit", handleAvatarPopup);
 popupFormUser.addEventListener("submit", handleSubmitProfile);
 cardFormPopup.addEventListener("submit", handleCardFormSubmit);
+
+getCards().then(() => {
+  console.log("then");
+  function setContent() {
+    getCards.forEach((content) => addCard(content));
+  }
+
+  setContent();
+  console.log("setContent");
+});
+console.log("final");

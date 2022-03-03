@@ -30,6 +30,14 @@ import {
   closePopEsc,
 } from "../components/utils.js";
 
+import {
+  config,
+  parseResponce,
+  getCards,
+  postCard,
+  deleteCard,
+} from "../components/api.js";
+
 function openAvatarPopup() {
   avatarLink.value = ""; //Сбросить значения input
   openPopup(popupFormAvatar);
