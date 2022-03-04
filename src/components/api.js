@@ -8,6 +8,7 @@ const config = {
 //Парсинг ответа
 const parseResponce = (res) => {
   if (res.ok) {
+    console.log("!", res);
     return res.json();
   }
   return Promise.reject(`Ошибка: ${res.status}`);
@@ -24,8 +25,8 @@ export const getCards = () => {
     });
 };
 //Добавление своей карточки
-export const postCard = () => {
-  return fetch(config.url, {
+export const postCard = (card) => {
+  return fetch(`${config.url}/cards`, {
     method: "POST",
     headers: config.headers,
     body: JSON.stringify({

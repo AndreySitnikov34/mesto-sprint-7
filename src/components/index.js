@@ -11,7 +11,7 @@ import {
   enableValidation,
 } from "../components/validate.js";
 
-// import { initialCards } from "../components/card.js";
+// import { addCard, } from "../components/card.js";
 
 import {
   openAvatarPopup,
@@ -95,16 +95,25 @@ popupFormAvatar.addEventListener("submit", handleAvatarPopup);
 popupFormUser.addEventListener("submit", handleSubmitProfile);
 cardFormPopup.addEventListener("submit", handleCardFormSubmit);
 //Изъятие карточек у сервера
-getCards()
-  .then((data) => {
-    console.log("then");
-    data.forEach((card) => {
-      addCard(card);
+const renderCards = () => {
+  console.log("render cards");
+  getCards()
+    .then((data) => {
+      data.forEach((card) => {
+        addCard(card);
+      });
+    })
+    .catch((err) => {
+      console.log("Ошибка загрузки контента", err.message);
     });
-    cardTemplate.prepend(...newCard);
-    console.log("setContent");
-  })
-  .catch((err) => {
-    console.log("Ошибка загрузки контента", err.message);
+};
+
+export function addNewCard(newCard) {
+  postCard(newCard).then((res) => {
+    console.log(res);
+    const contentCard = createCard(res);
+    cards.prepend(contentCard);
   });
-console.log("final");
+}
+
+renderCards();

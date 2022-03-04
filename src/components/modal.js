@@ -30,6 +30,10 @@ import {
   closePopEsc,
 } from "../components/utils.js";
 
+import { postCard } from "../components/api.js";
+
+import { addNewCard } from "../components/index.js";
+
 function openAvatarPopup() {
   avatarLink.value = ""; //Сбросить значения input
   openPopup(popupFormAvatar);
@@ -58,7 +62,7 @@ function openProfilePopup() {
 // Функция обработки создания новой карточки
 function handleCardFormSubmit(evt) {
   evt.preventDefault();
-  addCard({
+  addNewCard({
     name: titleInputCard.value,
     link: linkInputCard.value,
   });
@@ -95,11 +99,40 @@ function createCard(card) {
   cardDelete.addEventListener("click", removeCard);
   return cardElement;
 }
+//Функция добавления карточки
 const addCard = (card) => {
+  console.log(card);
   const contentCard = createCard(card);
-  cards.prepend(contentCard);
+  cards.append(contentCard);
 };
-
+//Функция добавления карточки
+// function addNewCard(newCard) {
+//   console.log(newCard);
+//   postCard(newCard);
+//   getCards();
+//   // const cardItem = cardFormPopup.querySelector(".card").cloneNode(true);
+//   // const buttonElement = cardFormPopup.querySelector(".button");
+//   // buttonElement.textContent = "Сохранение...";
+//   // evt.preventDefault();
+//   // const likeCount = cardItem.querySelector(".card__heart-count");
+//   // addNewCard({
+//   //   name: titleInputCard.value,
+//   //   link: linkInputCard.value,
+//   //   like: likeCount.textContent,
+//   // })
+//   //   .then((card) => {
+//   //     content.prepend(createCard(card));
+//   //     closePopup(cardFormPopup);
+//   //   })
+//   //   .catch((err) => {
+//   //     console.log("Ошибка добавления карточки на сервер", err.message);
+//   //   })
+//   //   .finally(function () {
+//   //     buttonElement.textContent = "Создать";
+//   //   });
+//   // buttonElement.classList.add("popup__button_disabled");
+//   // buttonElement.disabled = true;
+// }
 //Функция удаления карточки
 function removeCard(evt) {
   evt.target.closest(".card").remove();
