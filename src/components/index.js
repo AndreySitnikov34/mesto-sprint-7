@@ -52,6 +52,10 @@ import {
   getCards,
   postCard,
   deleteCard,
+  addLike,
+  deleteLike,
+  updateUser,
+  updateAvatar,
 } from "../components/api.js";
 
 import {
@@ -71,11 +75,11 @@ enableValidation({
   errorClass: "form__input-error_active",
 });
 
-function setContent() {
-  initialCards.forEach((content) => addCard(content));
-}
+// function setContent() {
+//   initialCards.forEach((content) => addCard(content));
+// }
 
-setContent();
+// setContent();
 
 document
   .querySelector(".user__overlay")
@@ -90,14 +94,17 @@ document
 popupFormAvatar.addEventListener("submit", handleAvatarPopup);
 popupFormUser.addEventListener("submit", handleSubmitProfile);
 cardFormPopup.addEventListener("submit", handleCardFormSubmit);
-
-getCards().then(() => {
-  console.log("then");
-  function setContent() {
-    getCards.forEach((content) => addCard(content));
-  }
-
-  setContent();
-  console.log("setContent");
-});
+//Изъятие карточек у сервера
+getCards()
+  .then((data) => {
+    console.log("then");
+    const newCard = data.map((cards) => {
+      return createCard(cards);
+    });
+    cardTemplate.prepend(...newCard);
+    console.log("setContent");
+  })
+  .catch((err) => {
+    console.log("Ошибка загрузки контента", err.message);
+  });
 console.log("final");

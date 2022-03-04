@@ -91,30 +91,30 @@ export const updateUser = () => {
       return Promise.reject(err);
     });
 };
-// //Смена аватарки
-// export const updateAvatar = () => {
-//   return fetch(`${config.baseUrl}/users/me/avatar`, {
-//     method: "PATCH",
-//     headers: config.headers,
-//     body: JSON.stringify({ avatar: data.avatar }),
-//   })
-//     .then((res) => parsResponse(res))
-//     .catch((err) => {
-//       console.log(err);
-//       return Promise.reject(err);
-//     });
-// };
-//Смена аватарки (асинхронной функцией) как подсказывает VSCode
-export const updateAvatar = async () => {
-  try {
-    const res = await fetch(`${config.url}/users/me/avatar`, {
-      method: "PATCH",
-      headers: config.headers,
-      body: JSON.stringify({ avatar: data.avatar }),
+//Смена аватарки
+export const updateAvatar = () => {
+  return fetch(`${config.baseUrl}/users/me/avatar`, {
+    method: "PATCH",
+    headers: config.headers,
+    body: JSON.stringify({ avatar: data.avatar }),
+  })
+    .then((res) => parsResponse(res))
+    .catch((err) => {
+      console.log(err);
+      return Promise.reject(err);
     });
-    return parsResponse(res);
-  } catch (err) {
-    console.log(err);
-    return await Promise.reject(err);
-  }
 };
+//Смена аватарки (асинхронной функцией) как подсказывает VSCode
+// export const updateAvatar = async () => {
+//   try {
+//     const res = await fetch(`${config.url}/users/me/avatar`, {
+//       method: "PATCH",
+//       headers: config.headers,
+//       body: JSON.stringify({ avatar: data.avatar }),
+//     });
+//     return parsResponse(res);
+//   } catch (err) {
+//     console.log(err);
+//     return await Promise.reject(err);
+//   }
+// };

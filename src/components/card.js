@@ -37,6 +37,6 @@
 //   },
 // ];
 
-class renderCards {
+function renderCards {
   static _template = document.querySelector("");
 }
