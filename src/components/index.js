@@ -98,8 +98,8 @@ cardFormPopup.addEventListener("submit", handleCardFormSubmit);
 getCards()
   .then((data) => {
     console.log("then");
-    const newCard = data.map((cards) => {
-      return createCard(cards);
+    data.forEach((card) => {
+      addCard(card);
     });
     cardTemplate.prepend(...newCard);
     console.log("setContent");
