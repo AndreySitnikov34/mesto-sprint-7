@@ -8,7 +8,7 @@ const config = {
 //Парсинг ответа
 const parseResponce = (res) => {
   if (res.ok) {
-    console.log("!", res);
+    console.log("Ответ от сервевра", res);
     return res.json();
   }
   return Promise.reject(`Ошибка: ${res.status}`);
@@ -71,6 +71,17 @@ export const deleteLike = (cardId) => {
     headers: config.headers,
   })
     .then((res) => parseResponce(res))
+    .catch((err) => {
+      console.log(err);
+      return Promise.reject(err);
+    });
+};
+//Получение данных о пользователе
+export const getUser = () => {
+  return fetch(`${config.url}/users/me`, {
+    headers: config.headers,
+  })
+    .then((res) => parseResponse(res))
     .catch((err) => {
       console.log(err);
       return Promise.reject(err);

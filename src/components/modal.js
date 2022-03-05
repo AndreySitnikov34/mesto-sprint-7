@@ -3,6 +3,7 @@ const avatarSubmitButton = popupFormAvatar.querySelector(".button-avatar");
 const cardSubmitButton = cardFormPopup.querySelector(".form__submit");
 
 import {
+  formElement,
   popupFormUser,
   popupFormAvatar,
   avatarLink,
@@ -30,9 +31,17 @@ import {
   closePopEsc,
 } from "../components/utils.js";
 
-import { postCard } from "../components/api.js";
+import {
+  addLike,
+  deleteCard,
+  deleteLike,
+  getCards,
+  postCard,
+  updateAvatar,
+  updateUser,
+} from "../components/api.js";
 
-import { addNewCard } from "../components/index.js";
+import { addNewCard, likeCard } from "../components/index.js";
 
 function openAvatarPopup() {
   avatarLink.value = ""; //Сбросить значения input
@@ -42,14 +51,14 @@ function openAvatarPopup() {
 
 // Функция обработки смены аватара
 function handleAvatarPopup(evt) {
-  evt.preventDefault(); // Не открывать в новом окне
+  // evt.preventDefault(); // Не открывать в новом окне
   userPic.src = avatarLink.value; // Заменить значение src
   closePopup(popupFormAvatar);
 }
 
 //Функция обработки профиля юзера после submit
 function handleSubmitProfile(evt) {
-  evt.preventDefault(); // Не открывать в новом окне
+  // evt.preventDefault(); // Не открывать в новом окне
   userName.textContent = formUserNameInput.value; // Присвоить name значение из формы
   userAbout.textContent = formUserAboutInput.value; // Присвоить about значение из формы
   closePopup(popupFormUser); // Закрыть попап
@@ -61,7 +70,7 @@ function openProfilePopup() {
 
 // Функция обработки создания новой карточки
 function handleCardFormSubmit(evt) {
-  evt.preventDefault();
+  // evt.preventDefault();
   addNewCard({
     name: titleInputCard.value,
     link: linkInputCard.value,
@@ -85,57 +94,50 @@ function openImagePopup(evt) {
 }
 
 //Функция создания новой карточки
-function createCard(card) {
+function createCard(card, _id) {
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
   const cardImage = cardElement.querySelector(".card__img");
   const cardLike = cardElement.querySelector(".card__heart");
   const cardDelete = cardElement.querySelector(".card__del");
   const cardLocation = cardElement.querySelector(".card__location");
+  //Показать ведро только на своих карточках
+  if ("9253fda4de1608ef23343856" !== card.owner._id) {
+    console.log(card.owner._id);
+    cardDelete.remove();
+  }
+
   cardLocation.textContent = card.name;
   cardImage.src = card.link;
   cardImage.alt = card.name;
+
   cardImage.addEventListener("click", openImagePopup);
-  cardLike.addEventListener("click", toggleLikes);
+  cardLike.addEventListener("click", likeCard);
   cardDelete.addEventListener("click", removeCard);
   return cardElement;
 }
 //Функция добавления карточки
 const addCard = (card) => {
-  console.log(card);
+  console.log("Содержимое карточки", card);
   const contentCard = createCard(card);
   cards.append(contentCard);
 };
-//Функция добавления карточки
-// function addNewCard(newCard) {
-//   console.log(newCard);
-//   postCard(newCard);
-//   getCards();
-//   // const cardItem = cardFormPopup.querySelector(".card").cloneNode(true);
-//   // const buttonElement = cardFormPopup.querySelector(".button");
-//   // buttonElement.textContent = "Сохранение...";
-//   // evt.preventDefault();
-//   // const likeCount = cardItem.querySelector(".card__heart-count");
-//   // addNewCard({
-//   //   name: titleInputCard.value,
-//   //   link: linkInputCard.value,
-//   //   like: likeCount.textContent,
-//   // })
-//   //   .then((card) => {
-//   //     content.prepend(createCard(card));
-//   //     closePopup(cardFormPopup);
-//   //   })
-//   //   .catch((err) => {
-//   //     console.log("Ошибка добавления карточки на сервер", err.message);
-//   //   })
-//   //   .finally(function () {
-//   //     buttonElement.textContent = "Создать";
-//   //   });
-//   // buttonElement.classList.add("popup__button_disabled");
-//   // buttonElement.disabled = true;
-// }
+
 //Функция удаления карточки
-function removeCard(evt) {
-  evt.target.closest(".card").remove();
+// removeCard(evt) {
+//   console.log("Удаление карточки", evt);
+//   evt.target.closest(".card").remove();
+// }
+
+//Удаление карточки с сервера
+function removeCard(card) {
+  console.log("Содержимое карточки", card);
+  deleteCard(card)
+    .then((res) => {
+      deleteCard(evt);
+    })
+    .catch((err) => {
+      console.log("Ошибка удаления карточки", err.message);
+    });
 }
 
 //Или написать функцию прямо внутри, сразу после слушателя. Кажется, так красивее
@@ -188,6 +190,5 @@ export {
   openImagePopup,
   createCard,
   addCard,
-  removeCard,
   toggleLikes,
 };

@@ -1,3 +1,4 @@
+export const formElement = document.querySelector(".form");
 export const popupFormUser = document.querySelector(".popup-form-user");
 export const popupFormAvatar = document.querySelector(".popup-form-avatar");
 export const avatarLink = document.querySelector("#url-input-avatar");
