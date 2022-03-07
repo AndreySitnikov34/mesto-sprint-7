@@ -11,7 +11,7 @@ import {
   enableValidation,
 } from "../components/validate.js";
 
-// import { addCard, } from "../components/card.js";
+import { createCard, addCard, toggleLikes } from "../components/card.js";
 
 import {
   openAvatarPopup,
@@ -21,9 +21,6 @@ import {
   handleCardFormSubmit,
   openCardPopup,
   openImagePopup,
-  createCard,
-  addCard,
-  toggleLikes,
 } from "../components/modal.js";
 
 import {
@@ -92,7 +89,7 @@ document
   .querySelector(".user__info-edit-button")
   .addEventListener("click", editUser);
 
-popupFormAvatar.addEventListener("submit", handleAvatarPopup);
+popupFormAvatar.addEventListener("submit", updateUserPhoto);
 popupFormUser.addEventListener("submit", handleSubmitProfile);
 cardFormPopup.addEventListener("submit", handleCardFormSubmit);
 //Изъятие карточек у сервера
@@ -106,7 +103,7 @@ const renderCards = () => {
       });
     })
     .catch((err) => {
-      console.log("Ошибка загрузки контента", err.message);
+      console.log("Ошибка загрузки контента:", err.message);
     });
 };
 //Добавление своей карточки на сервер
@@ -167,19 +164,6 @@ export function likeCard() {
       });
   }
 }
-//Просто fetch запрос
-// const userInfo = () => {
-//   return fetch(`https://nomoreparties.co/v1/plus-cohort7/cards`, {
-//     headers: {
-//       authorization: "01124a9d-ad91-4991-aee6-270006a314f8",
-//       "Content-Type": "application/json",
-//     },
-//   })
-//     .then((res) => res.json())
-//     .then((data) => console.log(data));
-// };
-// console.log(data);
-
 //Информация о пользователе
 console.log(
   fetch(`https://nomoreparties.co/v1/plus-cohort7/users/me`, {
@@ -191,3 +175,22 @@ console.log(
     .then((res) => res.json())
     .then((data) => console.log(data))
 );
+//Смена аватарки
+export function updateUserPhoto(evt) {
+  evt.preventDefault();
+  const buttonElement = popupFormAvatar.querySelector(".popup__button");
+  buttonElement.textContent = "Сохранение...";
+  updateAvatar({
+    avatar: avatarLink.value,
+  })
+    .then((res) => {
+      avatar.src = avatarLink.value;
+      closePopup(popupUpdateAvatar);
+    })
+    .catch((err) => {
+      console.log("Ошибка смены аватара", err.message);
+    })
+    .finally(() => {
+      buttonElement.textContent = "Сохранить";
+    });
+}
