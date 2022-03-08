@@ -45,7 +45,7 @@ import {
 
 //Функция создания новой карточки
 export function createCard(card) {
-  // console.log(card);
+  console.log("48", card);
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
   const cardImage = cardElement.querySelector(".card__img");
   const cardLike = cardElement.querySelector(".card__heart");
@@ -63,24 +63,26 @@ export function createCard(card) {
   likeCounter.textContent = card.likes.length;
   // cardDelete.classList.add(card._id);
   //Проверка своих лайков при загрузке
-  // getUser()
-  //   .then((card) => {
-  //     const userId = card._id;
-  //     console.log(userId);
-  //     console.log(card._id);
-  //     res.like.forEach((item) => {
-  //       if (item._id === userId) {
-  //         cardLike.classList.add("card__heart_liked");
-  //         likeCounter.textContent + 1;
-  //       }
-  //     });
-  //     if (res.owner._id !== userId) {
-  //       cardLike.classList.remove("card__heart_liked");
-  //     }
-  //   })
-  //   .catch((err) => {
-  //     console.log("Ошибка", err.message);
-  //   });
+  getUser()
+    .then((res) => {
+      const userId = res._id;
+      // console.log(userId);
+      // console.log("70", res);
+      // res.likes.forEach((item) => {
+      //   console.log(item.likes._id);
+      //   if (item._id === userId) {
+      //     console.log(likes._id);
+      //     cardLike.classList.add("card__heart_liked");
+      //   }
+      // });
+      // if (res.owner._id !== userId) {
+      //   console.log(likes.owner._id);
+      //   cardLike.classList.remove("card__heart_liked");
+      // }
+    })
+    .catch((err) => {
+      console.log("Ошибка проверки лайка", err.message);
+    });
   //Функция добавления/удаления лайка
   function likeCard() {
     let length = Number(likeCounter.textContent);
