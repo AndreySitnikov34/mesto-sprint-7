@@ -11,7 +11,12 @@ import {
   enableValidation,
 } from "../components/validate.js";
 
-import { createCard, addCard, toggleLikes } from "../components/card.js";
+import {
+  createCard,
+  addCard,
+  toggleLikes,
+  likeCard,
+} from "../components/card.js";
 
 import {
   openAvatarPopup,
@@ -97,7 +102,7 @@ const renderCards = () => {
   console.log("render cards");
   getCards()
     .then((data) => {
-      console.log("then");
+      // console.log("then");
       data.forEach((card) => {
         addCard(card);
       });
@@ -109,7 +114,7 @@ const renderCards = () => {
 //Добавление своей карточки на сервер
 export function addNewCard(newCard) {
   postCard(newCard).then((res) => {
-    // console.log(res);
+    console.log(res);
     const contentCard = createCard(res);
     cards.prepend(contentCard);
   });
@@ -118,6 +123,16 @@ export function addNewCard(newCard) {
 renderCards();
 
 formElement.addEventListener("submit", editUser);
+//Получение информации о юзере
+getUserInfo()
+  .then((data) => {
+    userName.textContent = data.name;
+    userAbout.textContent = data.about;
+    userPic.src = data.avatar;
+  })
+  .catch((err) => {
+    console.log("Ошибка загрузки данных о пользователе", err.message);
+  });
 
 //Редактирование профиля
 export function editUser(evt) {
@@ -141,40 +156,18 @@ export function editUser(evt) {
       buttonElement.textContent = "Сохранить";
     });
 }
-//Функция добавления/удаления лайка
-export function likeCard() {
-  let length = Number(likeCounter.textContent.value);
-  if (!likeButton.classList.contains("card__heart")) {
-    addLike(res._id)
-      .then((res) => {
-        likeButton.classList.add("card__heart");
-        likeCounter.textContent = length + 1;
-      })
-      .catch((err) => {
-        console.log("Ошибка добавления лайка", err.message);
-      });
-  } else {
-    deleteLike(res._id)
-      .then((res) => {
-        likeButton.classList.remove("card__heart");
-        likeCounter.textContent = length - 1;
-      })
-      .catch((err) => {
-        console.log("Ошибка удаления лайка", err.message);
-      });
-  }
-}
+
 //Информация о пользователе
-console.log(
-  fetch(`https://nomoreparties.co/v1/plus-cohort7/users/me`, {
-    headers: {
-      authorization: "01124a9d-ad91-4991-aee6-270006a314f8",
-      "Content-Type": "application/json",
-    },
-  })
-    .then((res) => res.json())
-    .then((data) => console.log(data))
-);
+// console.log(
+//   fetch(`https://nomoreparties.co/v1/plus-cohort7/users/me`, {
+//     headers: {
+//       authorization: "01124a9d-ad91-4991-aee6-270006a314f8",
+//       "Content-Type": "application/json",
+//     },
+//   })
+//     .then((res) => res.json())
+//     .then((data) => console.log(data))
+// );
 //Смена аватарки
 export function updateUserPhoto(evt) {
   evt.preventDefault();

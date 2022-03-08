@@ -28,7 +28,7 @@ import {
   openImagePopup,
 } from "../components/modal.js";
 
-import { addNewCard, likeCard } from "../components/index.js";
+import { addNewCard } from "../components/index.js";
 
 import {
   config,
@@ -98,7 +98,7 @@ export function createCard(card) {
   const likeCounter = cardElement.querySelector(".card__heart-count");
   //Показать ведро только на своих карточках
   if ("9253fda4de1608ef23343856" !== card.owner._id) {
-    console.log(card.owner._id);
+    // console.log(card.owner._id);
     cardDelete.remove();
   }
   cardLocation.textContent = card.name;
@@ -107,13 +107,37 @@ export function createCard(card) {
   likeCounter.textContent = card.likes.length;
   cardDelete.classList.add(card._id);
 
+  //Функция добавления/удаления лайка
+  function likeCard() {
+    let length = Number(likeCounter.textContent);
+    if (!cardLike.classList.contains("card__heart_liked")) {
+      addLike(card._id)
+        .then((card) => {
+          cardLike.classList.add("card__heart_liked");
+          likeCounter.textContent = length + 1;
+        })
+        .catch((err) => {
+          console.log("Ошибка добавления лайка", err.message);
+        });
+    } else {
+      deleteLike(card._id)
+        .then((card) => {
+          cardLike.classList.remove("card__heart_liked");
+          likeCounter.textContent = length - 1;
+        })
+        .catch((err) => {
+          console.log("Ошибка удаления лайка", err.message);
+        });
+    }
+  }
+
   //Слушатели
   cardImage.addEventListener("click", openImagePopup);
   cardLike.addEventListener("click", likeCard);
   cardDelete.addEventListener("click", (evt) => {
-    deleteCard(card._id)
+    deleteCard(card._id) //Удаление карточки по id
       .then((card) => {
-        evt.target.parentNode.remove();
+        evt.target.closest(".card").remove();
       })
       .catch((err) => {
         console.log("Ошибка удаления карточки", err.message);
@@ -123,42 +147,15 @@ export function createCard(card) {
 }
 //Функция добавления карточки
 export const addCard = (card) => {
-  console.log("Содержимое карточки", card._id);
+  // console.log("Содержимое карточки", card._id);
   const contentCard = createCard(card);
   cards.append(contentCard);
 };
 
-//  (evt) => {
-//    removeCard(res._id)
-//     .then((res) => {
-//       deleteCard(evt);
-//     })
-//     .catch((err) => {
-//       console.log("Ошибка удаления карточки", err.message);
-//     })
-// }
-
-//Удаление карточки с сервера
-// export function removeCard(evt) {
-//   const cardId = evt.target.className.split(" ")[1];
-//   evt.target.parentNode.remove();
-//   console.log("Содержимое карточки", cardId);
-//   deleteCard(cardId)
-//     .then((res) => {
-//       deleteCard(evt);
-//     })
-//     .catch((err) => {
-//       console.log("Ошибка удаления карточки", err.message);
-//     });
-// }
-//Функция добавления/удаления лайка
-export function toggleLikes(evt) {
-  evt.target.classList.toggle("card__heart_liked");
-}
-//Работа со счетчиком лайков
+// //Работа со счетчиком лайков
 // getUser()
 //   .then((data) => {
-//     const userId = data._id;
+//     const userId = c._id;
 //     res.like.forEach((item) => {
 //       if (item._id === userId) {
 //         likeButton.classList.add("card__heart_liked");
