@@ -92,11 +92,12 @@ document
   .addEventListener("click", openCardPopup);
 document
   .querySelector(".user__info-edit-button")
-  .addEventListener("click", editUser);
+  .addEventListener("click", openProfilePopup);
 
 popupFormAvatar.addEventListener("submit", updateUserPhoto);
-popupFormUser.addEventListener("submit", handleSubmitProfile);
+popupFormUser.addEventListener("submit", editUser);
 cardFormPopup.addEventListener("submit", handleCardFormSubmit);
+
 //Изъятие карточек у сервера
 const renderCards = () => {
   console.log("render cards");
@@ -123,15 +124,16 @@ export function addNewCard(newCard) {
 renderCards();
 
 formElement.addEventListener("submit", editUser);
-//Получение информации о юзере
-getUserInfo()
+//Получение информации о юзере при загрузке
+getUser()
   .then((data) => {
+    // console.log("Вот что вернулось", data);
     userName.textContent = data.name;
     userAbout.textContent = data.about;
     userPic.src = data.avatar;
   })
   .catch((err) => {
-    console.log("Ошибка загрузки данных о пользователе", err.message);
+    console.log("Ошибка загрузки данных о пользователе", err);
   });
 
 //Редактирование профиля
@@ -147,7 +149,7 @@ export function editUser(evt) {
     .then((res) => {
       userName.textContent = formUserNameInput.value;
       userAbout.textContent = formUserAboutInput.value;
-      closePopup(popupProfile);
+      closePopup(popupFormUser);
     })
     .catch((err) => {
       console.log("Ошибка редактирования профиля", err.message);
@@ -171,14 +173,14 @@ export function editUser(evt) {
 //Смена аватарки
 export function updateUserPhoto(evt) {
   evt.preventDefault();
-  const buttonElement = popupFormAvatar.querySelector(".popup__button");
+  const buttonElement = popupFormAvatar.querySelector(".button");
   buttonElement.textContent = "Сохранение...";
   updateAvatar({
     avatar: avatarLink.value,
   })
     .then((res) => {
-      avatar.src = avatarLink.value;
-      closePopup(popupUpdateAvatar);
+      userPic.src = avatarLink.value;
+      closePopup(popupFormAvatar);
     })
     .catch((err) => {
       console.log("Ошибка смены аватара", err.message);

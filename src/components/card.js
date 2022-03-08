@@ -42,50 +42,6 @@ import {
   updateUser,
   updateAvatar,
 } from "../components/api.js";
-//Функция добавления карточки
-// function addCard(evt) {
-//   const cardItem = cardFormPopup.querySelector(".card").cloneNode(true);
-//   const buttonElement = cardFormPopup.querySelector(".button");
-//   buttonElement.textContent = "Сохранение...";
-//   evt.preventDefault();
-//   const likeCount = cardItem.querySelector(".card__heart-count");
-//   addNewCard({
-//     name: titleInputCard.value,
-//     link: linkInputCard.value,
-//     like: likeCount.textContent,
-//   })
-//     .then((card) => {
-//       content.prepend(createCard(card));
-//       closePopup(cardFormPopup);
-//     })
-//     .catch((err) => {
-//       console.log("Ошибка добавления карточки на сервер", err.message);
-//     })
-//     .finally(function () {
-//       buttonElement.textContent = "Создать";
-//     });
-//   buttonElement.classList.add("popup__button_disabled");
-//   buttonElement.disabled = true;
-// }
-
-//Функция удаления карточки
-// removeCard(evt) {
-//   console.log("Удаление карточки", evt);
-//   evt.target.closest(".card").remove();
-// }
-//Удаление карточки с сервера
-// function removeCard(evt) {
-//   const cardId = evt.target.className.split(" ")[1];
-//   evt.target.parentNode.remove();
-//   console.log("Содержимое карточки", cardId);
-//   deleteCard(cardId)
-//     .then((res) => {
-//       deleteCard(evt);
-//     })
-//     .catch((err) => {
-//       console.log("Ошибка удаления карточки", err.message);
-//     });
-// }
 
 //Функция создания новой карточки
 export function createCard(card) {
@@ -105,14 +61,33 @@ export function createCard(card) {
   cardImage.src = card.link;
   cardImage.alt = card.name;
   likeCounter.textContent = card.likes.length;
-  cardDelete.classList.add(card._id);
-
+  // cardDelete.classList.add(card._id);
+  //Проверка своих лайков при загрузке
+  // getUser()
+  //   .then((card) => {
+  //     const userId = card._id;
+  //     console.log(userId);
+  //     console.log(card._id);
+  //     res.like.forEach((item) => {
+  //       if (item._id === userId) {
+  //         cardLike.classList.add("card__heart_liked");
+  //         likeCounter.textContent + 1;
+  //       }
+  //     });
+  //     if (res.owner._id !== userId) {
+  //       cardLike.classList.remove("card__heart_liked");
+  //     }
+  //   })
+  //   .catch((err) => {
+  //     console.log("Ошибка", err.message);
+  //   });
   //Функция добавления/удаления лайка
   function likeCard() {
     let length = Number(likeCounter.textContent);
     if (!cardLike.classList.contains("card__heart_liked")) {
       addLike(card._id)
         .then((card) => {
+          console.log(card._id);
           cardLike.classList.add("card__heart_liked");
           likeCounter.textContent = length + 1;
         })
@@ -130,8 +105,7 @@ export function createCard(card) {
         });
     }
   }
-
-  //Слушатели
+  //Слушатели внутри функции
   cardImage.addEventListener("click", openImagePopup);
   cardLike.addEventListener("click", likeCard);
   cardDelete.addEventListener("click", (evt) => {
@@ -145,27 +119,28 @@ export function createCard(card) {
   });
   return cardElement;
 }
-//Функция добавления карточки
+//Функция добавления карточки на сервер
 export const addCard = (card) => {
   // console.log("Содержимое карточки", card._id);
   const contentCard = createCard(card);
   cards.append(contentCard);
 };
 
-// //Работа со счетчиком лайков
-// getUser()
-//   .then((data) => {
-//     const userId = c._id;
-//     res.like.forEach((item) => {
-//       if (item._id === userId) {
-//         likeButton.classList.add("card__heart_liked");
-//         likeCounter.textContent + 1;
-//       }
+//Функция удаления карточки
+// removeCard(evt) {
+//   console.log("Удаление карточки", evt);
+//   evt.target.closest(".card").remove();
+// }
+//Удаление карточки с сервера
+// function removeCard(evt) {
+//   const cardId = evt.target.className.split(" ")[1];
+//   evt.target.parentNode.remove();
+//   console.log("Содержимое карточки", cardId);
+//   deleteCard(cardId)
+//     .then((res) => {
+//       deleteCard(evt);
+//     })
+//     .catch((err) => {
+//       console.log("Ошибка удаления карточки", err.message);
 //     });
-//     if (res.owner._id !== userId) {
-//       deleteButton.style.display = "none";
-//     }
-//   })
-//   .catch((err) => {
-//     console.log("Ошибка", err.message);
-//   });
+// }

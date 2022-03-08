@@ -6,7 +6,7 @@ const config = {
   },
 };
 //Парсинг ответа
-const parseResponce = (res) => {
+const parseResponse = (res) => {
   if (res.ok) {
     console.log("Ответ от сервевра", res);
     return res.json();
@@ -18,7 +18,7 @@ export const getCards = () => {
   return fetch(`${config.url}/cards`, {
     headers: config.headers,
   })
-    .then((res) => parseResponce(res))
+    .then((res) => parseResponse(res))
     .catch((err) => {
       console.log(err);
       return Promise.reject(err);
@@ -34,7 +34,7 @@ export const postCard = (card) => {
       link: card.link,
     }),
   })
-    .then((res) => parseResponce(res))
+    .then((res) => parseResponse(res))
     .catch((err) => {
       console.log(err);
       return Promise.reject(err);
@@ -46,7 +46,7 @@ export const deleteCard = (cardId) => {
     method: "DELETE",
     headers: config.headers,
   })
-    .then((res) => parseResponce(res))
+    .then((res) => parseResponse(res))
     .catch((err) => {
       console.log(err);
       return Promise.reject(err);
@@ -58,7 +58,7 @@ export const addLike = (cardId) => {
     method: "PUT",
     headers: config.headers,
   })
-    .then((res) => parseResponce(res))
+    .then((res) => parseResponse(res))
     .catch((err) => {
       console.log(err);
       return Promise.reject(err);
@@ -70,7 +70,7 @@ export const deleteLike = (cardId) => {
     method: "DELETE",
     headers: config.headers,
   })
-    .then((res) => parseResponce(res))
+    .then((res) => parseResponse(res))
     .catch((err) => {
       console.log(err);
       return Promise.reject(err);
@@ -88,27 +88,24 @@ export const getUser = () => {
     });
 };
 //Добавление пользователя
-export const updateUser = () => {
+export const updateUser = ({ name, about }) => {
   return fetch(`${config.url}/users/me`, {
     method: "PATCH",
     headers: config.headers,
-    body: JSON.stringify({
-      name: data.name,
-      about: data.about,
-    }),
+    body: JSON.stringify({ name, about }),
   })
-    .then((res) => parseResponce(res))
+    .then((res) => parseResponse(res))
     .catch((err) => {
       console.log(err);
       return Promise.reject(err);
     });
 };
 //Смена аватарки
-export const updateAvatar = () => {
+export const updateAvatar = ({ avatar }) => {
   return fetch(`${config.baseUrl}/users/me/avatar`, {
     method: "PATCH",
     headers: config.headers,
-    body: JSON.stringify({ avatar: data.avatar }),
+    body: JSON.stringify({ avatar }),
   })
     .then((res) => parsResponse(res))
     .catch((err) => {
