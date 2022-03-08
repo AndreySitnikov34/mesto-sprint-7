@@ -99,13 +99,13 @@ popupFormUser.addEventListener("submit", editUser);
 cardFormPopup.addEventListener("submit", handleCardFormSubmit);
 
 //Изъятие карточек у сервера
-const renderCards = () => {
+const renderCards = (userId) => {
   console.log("render cards");
   getCards()
     .then((data) => {
       // console.log("then");
       data.forEach((card) => {
-        addCard(card);
+        addCard(card, userId);
       });
     })
     .catch((err) => {
@@ -121,16 +121,17 @@ export function addNewCard(newCard) {
   });
 }
 
-renderCards();
-
 formElement.addEventListener("submit", editUser);
 //Получение информации о юзере при загрузке
 getUser()
   .then((data) => {
+    const userId = data._id;
     // console.log("Вот что вернулось", data);
     userName.textContent = data.name;
     userAbout.textContent = data.about;
     userPic.src = data.avatar;
+
+    renderCards(userId);
   })
   .catch((err) => {
     console.log("Ошибка загрузки данных о пользователе", err);

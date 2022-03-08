@@ -44,8 +44,8 @@ import {
 } from "../components/api.js";
 
 //Функция создания новой карточки
-export function createCard(card) {
-  console.log("48", card);
+export function createCard(card, userId) {
+  console.log("Содержимое карточек", card);
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
   const cardImage = cardElement.querySelector(".card__img");
   const cardLike = cardElement.querySelector(".card__heart");
@@ -53,36 +53,23 @@ export function createCard(card) {
   const cardLocation = cardElement.querySelector(".card__location");
   const likeCounter = cardElement.querySelector(".card__heart-count");
   //Показать ведро только на своих карточках
-  if ("9253fda4de1608ef23343856" !== card.owner._id) {
-    // console.log(card.owner._id);
+  if (userId !== card.owner._id) {
+    console.log("userId", userId);
     cardDelete.remove();
   }
+  //Покарсить свои лайки
+  card.likes.forEach((user) => {
+    if (user._id === userId) {
+      console.log("user._id", user._id);
+      cardLike.classList.add("card__heart_liked");
+    }
+  });
+
   cardLocation.textContent = card.name;
   cardImage.src = card.link;
   cardImage.alt = card.name;
   likeCounter.textContent = card.likes.length;
-  // cardDelete.classList.add(card._id);
-  //Проверка своих лайков при загрузке
-  getUser()
-    .then((res) => {
-      const userId = res._id;
-      // console.log(userId);
-      // console.log("70", res);
-      // res.likes.forEach((item) => {
-      //   console.log(item.likes._id);
-      //   if (item._id === userId) {
-      //     console.log(likes._id);
-      //     cardLike.classList.add("card__heart_liked");
-      //   }
-      // });
-      // if (res.owner._id !== userId) {
-      //   console.log(likes.owner._id);
-      //   cardLike.classList.remove("card__heart_liked");
-      // }
-    })
-    .catch((err) => {
-      console.log("Ошибка проверки лайка", err.message);
-    });
+
   //Функция добавления/удаления лайка
   function likeCard() {
     let length = Number(likeCounter.textContent);
@@ -122,27 +109,8 @@ export function createCard(card) {
   return cardElement;
 }
 //Функция добавления карточки на сервер
-export const addCard = (card) => {
+export const addCard = (card, userId) => {
   // console.log("Содержимое карточки", card._id);
-  const contentCard = createCard(card);
+  const contentCard = createCard(card, userId);
   cards.append(contentCard);
 };
-
-//Функция удаления карточки
-// removeCard(evt) {
-//   console.log("Удаление карточки", evt);
-//   evt.target.closest(".card").remove();
-// }
-//Удаление карточки с сервера
-// function removeCard(evt) {
-//   const cardId = evt.target.className.split(" ")[1];
-//   evt.target.parentNode.remove();
-//   console.log("Содержимое карточки", cardId);
-//   deleteCard(cardId)
-//     .then((res) => {
-//       deleteCard(evt);
-//     })
-//     .catch((err) => {
-//       console.log("Ошибка удаления карточки", err.message);
-//     });
-// }
