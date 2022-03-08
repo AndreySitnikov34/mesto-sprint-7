@@ -93,24 +93,6 @@ function openImagePopup(evt) {
   openPopup(popupImage);
 }
 
-//Или написать функцию прямо внутри, сразу после слушателя. Кажется, так красивее
-// function createCard(card) {
-//   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
-//   cardElement.querySelector(".card__location").textContent = card.name;
-//   cardElement.querySelector(".card__img").src = card.link;
-//   cardElement.querySelector(".card__img").alt = card.name;
-//   cardElement
-//     .querySelector(".card__img")
-//     .addEventListener("click", openImagePopup);
-//   cardElement
-//     .querySelector(".card__heart")
-//     .addEventListener("click", toggleLikes);
-//   cardElement.querySelector(".card__del").addEventListener("click", () => {
-//     cardElement.remove();
-//   });
-//   return cardElement;
-// }
-
 //Всё можно экспортнуть скопом (легче будет копировать в импорт;))))
 export {
   popupFormUser,

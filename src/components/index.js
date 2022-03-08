@@ -77,13 +77,7 @@ enableValidation({
   inputErrorClass: "form__input-error",
   errorClass: "form__input-error_active",
 });
-
-// function setContent() {
-//   initialCards.forEach((content) => addCard(content));
-// }
-
-// setContent();
-
+//Слушатели кликов
 document
   .querySelector(".user__overlay")
   .addEventListener("click", openAvatarPopup);
@@ -93,14 +87,14 @@ document
 document
   .querySelector(".user__info-edit-button")
   .addEventListener("click", openProfilePopup);
-
+//Слушатели сабмитов
 popupFormAvatar.addEventListener("submit", updateUserPhoto);
 popupFormUser.addEventListener("submit", editUser);
 cardFormPopup.addEventListener("submit", handleCardFormSubmit);
-
+formElement.addEventListener("submit", editUser);
 //Изъятие карточек у сервера
 const renderCards = (userId) => {
-  console.log("render cards");
+  // console.log("render cards");
   getCards()
     .then((data) => {
       // console.log("then");
@@ -121,7 +115,6 @@ export function addNewCard(newCard) {
   });
 }
 
-formElement.addEventListener("submit", editUser);
 //Получение информации о юзере при загрузке
 getUser()
   .then((data) => {
@@ -140,7 +133,7 @@ getUser()
 //Редактирование профиля
 export function editUser(evt) {
   console.log("start Edit User");
-  evt.preventDefault();
+  // evt.preventDefault();
   const buttonElement = cardFormPopup.querySelector(".button");
   buttonElement.textContent = "Сохранение...";
   updateUser({
@@ -159,21 +152,9 @@ export function editUser(evt) {
       buttonElement.textContent = "Сохранить";
     });
 }
-
-//Информация о пользователе
-// console.log(
-//   fetch(`https://nomoreparties.co/v1/plus-cohort7/users/me`, {
-//     headers: {
-//       authorization: "01124a9d-ad91-4991-aee6-270006a314f8",
-//       "Content-Type": "application/json",
-//     },
-//   })
-//     .then((res) => res.json())
-//     .then((data) => console.log(data))
-// );
 //Смена аватарки
 export function updateUserPhoto(evt) {
-  evt.preventDefault();
+  // evt.preventDefault();
   const buttonElement = popupFormAvatar.querySelector(".button");
   buttonElement.textContent = "Сохранение...";
   updateAvatar({
@@ -190,3 +171,14 @@ export function updateUserPhoto(evt) {
       buttonElement.textContent = "Сохранить";
     });
 }
+//Информация о пользователе
+// console.log(
+//   fetch(`https://nomoreparties.co/v1/plus-cohort7/users/me`, {
+//     headers: {
+//       authorization: "01124a9d-ad91-4991-aee6-270006a314f8",
+//       "Content-Type": "application/json",
+//     },
+//   })
+//     .then((res) => res.json())
+//     .then((data) => console.log(data))
+// );

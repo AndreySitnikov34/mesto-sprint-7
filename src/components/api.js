@@ -8,7 +8,7 @@ const config = {
 //Парсинг ответа
 const parseResponse = (res) => {
   if (res.ok) {
-    console.log("Ответ от сервевра", res);
+    // console.log("Ответ от сервевра", res);
     return res.json();
   }
   return Promise.reject(`Ошибка: ${res.status}`);

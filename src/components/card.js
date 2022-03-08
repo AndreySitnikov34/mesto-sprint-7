@@ -45,7 +45,7 @@ import {
 
 //Функция создания новой карточки
 export function createCard(card, userId) {
-  console.log("Содержимое карточек", card);
+  // console.log("Содержимое карточек", card);
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
   const cardImage = cardElement.querySelector(".card__img");
   const cardLike = cardElement.querySelector(".card__heart");
@@ -54,13 +54,12 @@ export function createCard(card, userId) {
   const likeCounter = cardElement.querySelector(".card__heart-count");
   //Показать ведро только на своих карточках
   if (userId !== card.owner._id) {
-    console.log("userId", userId);
+    // console.log("userId", userId);
     cardDelete.remove();
   }
   //Покарсить свои лайки
   card.likes.forEach((user) => {
     if (user._id === userId) {
-      console.log("user._id", user._id);
       cardLike.classList.add("card__heart_liked");
     }
   });
