@@ -51,17 +51,29 @@ function openAvatarPopup() {
 
 // Функция обработки смены аватара
 function handleAvatarPopup(evt) {
-  // evt.preventDefault(); // Не открывать в новом окне
-  userPic.src = avatarLink.value; // Заменить значение src
+  console.log("start handleAvatarPopup");
+  evt.preventDefault(); // Не открывать в новом окне
+  const buttonElement = popupFormAvatar.querySelector(".button"); //Сделать кнопку переменной
+  buttonElement.textContent = "Сохранение..."; //Поменять значение в кнопке
+  userPic.src = avatarLink.value; //Заменить значение src (взять из инпута)
+  updateAvatar({
+    avatar: avatarLink.value,
+  })
+    .then((res) => {
+      console.log("Аватар изменён", res);
+      userPic.src = avatarLink.value; //Заменить значение src (взять из инпута)
+    })
+    .catch((err) => {
+      console.log("Ошибка смены аватара", err.message);
+    })
+    .finally(() => {
+      buttonElement.textContent = "Сохранить"; //Поменять значение в кнопке обратно
+    });
   closePopup(popupFormAvatar);
 }
 
 //Функция обработки профиля юзера после submit
 function handleSubmitProfile(evt) {
-  // // evt.preventDefault(); // Не открывать в новом окне
-  // userName.textContent = formUserNameInput.value; // Присвоить name значение из формы
-  // userAbout.textContent = formUserAboutInput.value; // Присвоить about значение из формы
-  // closePopup(popupFormUser); // Закрыть попап
   console.log("start handleSubmitProfile");
   evt.preventDefault();
   const buttonElement = cardFormPopup.querySelector(".button");
@@ -71,10 +83,9 @@ function handleSubmitProfile(evt) {
     about: formUserAboutInput.value,
   })
     .then((res) => {
-      userName.textContent = formUserNameInput.value;
-      userAbout.textContent = formUserAboutInput.value;
-      closePopup(popupFormUser);
-      // closePopup(formElement);
+      userName.textContent = formUserNameInput.value; // Присвоить name значение из формы
+      userAbout.textContent = formUserAboutInput.value; // Присвоить about значение из формы
+      closePopup(popupFormUser); // Закрыть попап
     })
     .catch((err) => {
       console.log("Ошибка редактирования профиля", err.message);
@@ -86,7 +97,6 @@ function handleSubmitProfile(evt) {
 
 function openProfilePopup() {
   openPopup(popupFormUser);
-  // openPopup(formElement);
 }
 
 // Функция обработки создания новой карточки

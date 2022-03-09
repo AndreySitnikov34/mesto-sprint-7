@@ -88,10 +88,10 @@ document
   .querySelector(".user__info-edit-button")
   .addEventListener("click", openProfilePopup);
 //Слушатели сабмитов
-popupFormAvatar.addEventListener("submit", updateUserPhoto);
+// popupFormAvatar.addEventListener("submit", updateUserPhoto);
 popupFormUser.addEventListener("submit", handleSubmitProfile);
 cardFormPopup.addEventListener("submit", handleCardFormSubmit);
-formElement.addEventListener("submit", editUser);
+formElement.addEventListener("submit", handleAvatarPopup);
 //Изъятие карточек у сервера
 const renderCards = (userId) => {
   // console.log("render cards");
@@ -119,7 +119,7 @@ export function addNewCard(newCard) {
 getUser()
   .then((data) => {
     const userId = data._id;
-    // console.log("Вот что вернулось", data);
+    console.log("Информация по юзеру", data);
     userName.textContent = data.name;
     userAbout.textContent = data.about;
     userPic.src = data.avatar;
@@ -130,48 +130,25 @@ getUser()
     console.log("Ошибка загрузки данных о пользователе", err);
   });
 
-//Редактирование профиля
-export function editUser(evt) {
-  console.log("start Edit User");
-  // evt.preventDefault();
-  const buttonElement = cardFormPopup.querySelector(".button");
-  buttonElement.textContent = "Сохранение...";
-  updateUser({
-    name: formUserNameInput.value,
-    about: formUserAboutInput.value,
-  })
-    .then((res) => {
-      userName.textContent = formUserNameInput.value;
-      userAbout.textContent = formUserAboutInput.value;
-      closePopup(popupFormUser);
-      // closePopup(formElement);
-    })
-    .catch((err) => {
-      console.log("Ошибка редактирования профиля", err.message);
-    })
-    .finally(() => {
-      buttonElement.textContent = "Сохранить";
-    });
-}
-//Смена аватарки
-export function updateUserPhoto(evt) {
-  // evt.preventDefault();
-  const buttonElement = popupFormAvatar.querySelector(".button");
-  buttonElement.textContent = "Сохранение...";
-  updateAvatar({
-    avatar: avatarLink.value,
-  })
-    .then((res) => {
-      userPic.src = avatarLink.value;
-      closePopup(popupFormAvatar);
-    })
-    .catch((err) => {
-      console.log("Ошибка смены аватара", err.message);
-    })
-    .finally(() => {
-      buttonElement.textContent = "Сохранить";
-    });
-}
+// //Смена аватарки
+// export function updateUserPhoto(evt) {
+//   // evt.preventDefault();
+//   const buttonElement = popupFormAvatar.querySelector(".button");
+//   buttonElement.textContent = "Сохранение...";
+//   updateAvatar({
+//     avatar: avatarLink.value,
+//   })
+//     .then((res) => {
+//       userPic.src = avatarLink.value;
+//       closePopup(popupFormAvatar);
+//     })
+//     .catch((err) => {
+//       console.log("Ошибка смены аватара", err.message);
+//     })
+//     .finally(() => {
+//       buttonElement.textContent = "Сохранить";
+//     });
+// }
 //Информация о пользователе
 // console.log(
 //   fetch(`https://nomoreparties.co/v1/plus-cohort7/users/me`, {

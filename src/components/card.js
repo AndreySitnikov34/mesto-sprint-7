@@ -1,6 +1,6 @@
 import {
   formElement,
-  // popupFormUser,
+  popupFormUser,
   popupFormAvatar,
   avatarLink,
   formUserNameInput,
