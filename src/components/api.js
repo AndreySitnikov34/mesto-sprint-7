@@ -102,7 +102,7 @@ export const updateUser = ({ name, about }) => {
 };
 //Смена аватарки
 export const updateAvatar = ({ avatar }) => {
-  return fetch(`${config.baseUrl}/users/me/avatar`, {
+  return fetch(`${config.url}/users/me/avatar`, {
     method: "PATCH",
     headers: config.headers,
     body: JSON.stringify({ avatar }),

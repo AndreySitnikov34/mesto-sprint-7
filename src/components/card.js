@@ -1,6 +1,6 @@
 import {
   formElement,
-  popupFormUser,
+  // popupFormUser,
   popupFormAvatar,
   avatarLink,
   formUserNameInput,
@@ -42,7 +42,6 @@ import {
   updateUser,
   updateAvatar,
 } from "../components/api.js";
-
 //Функция создания новой карточки
 export function createCard(card, userId) {
   // console.log("Содержимое карточек", card);
@@ -109,7 +108,7 @@ export function createCard(card, userId) {
 }
 //Функция добавления карточки на сервер
 export const addCard = (card, userId) => {
-  // console.log("Содержимое карточки", card._id);
+  // console.log("Содержимое карточки", card);
   const contentCard = createCard(card, userId);
   cards.append(contentCard);
 };

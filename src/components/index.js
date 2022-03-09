@@ -89,7 +89,7 @@ document
   .addEventListener("click", openProfilePopup);
 //Слушатели сабмитов
 popupFormAvatar.addEventListener("submit", updateUserPhoto);
-popupFormUser.addEventListener("submit", editUser);
+popupFormUser.addEventListener("submit", handleSubmitProfile);
 cardFormPopup.addEventListener("submit", handleCardFormSubmit);
 formElement.addEventListener("submit", editUser);
 //Изъятие карточек у сервера
@@ -144,6 +144,7 @@ export function editUser(evt) {
       userName.textContent = formUserNameInput.value;
       userAbout.textContent = formUserAboutInput.value;
       closePopup(popupFormUser);
+      // closePopup(formElement);
     })
     .catch((err) => {
       console.log("Ошибка редактирования профиля", err.message);

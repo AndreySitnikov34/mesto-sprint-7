@@ -58,19 +58,40 @@ function handleAvatarPopup(evt) {
 
 //Функция обработки профиля юзера после submit
 function handleSubmitProfile(evt) {
-  // evt.preventDefault(); // Не открывать в новом окне
-  userName.textContent = formUserNameInput.value; // Присвоить name значение из формы
-  userAbout.textContent = formUserAboutInput.value; // Присвоить about значение из формы
-  closePopup(popupFormUser); // Закрыть попап
+  // // evt.preventDefault(); // Не открывать в новом окне
+  // userName.textContent = formUserNameInput.value; // Присвоить name значение из формы
+  // userAbout.textContent = formUserAboutInput.value; // Присвоить about значение из формы
+  // closePopup(popupFormUser); // Закрыть попап
+  console.log("start handleSubmitProfile");
+  evt.preventDefault();
+  const buttonElement = cardFormPopup.querySelector(".button");
+  buttonElement.textContent = "Сохранение...";
+  updateUser({
+    name: formUserNameInput.value,
+    about: formUserAboutInput.value,
+  })
+    .then((res) => {
+      userName.textContent = formUserNameInput.value;
+      userAbout.textContent = formUserAboutInput.value;
+      closePopup(popupFormUser);
+      // closePopup(formElement);
+    })
+    .catch((err) => {
+      console.log("Ошибка редактирования профиля", err.message);
+    })
+    .finally(() => {
+      buttonElement.textContent = "Сохранить";
+    });
 }
 
 function openProfilePopup() {
   openPopup(popupFormUser);
+  // openPopup(formElement);
 }
 
 // Функция обработки создания новой карточки
 function handleCardFormSubmit(evt) {
-  // evt.preventDefault();
+  evt.preventDefault();
   addNewCard({
     name: titleInputCard.value,
     link: linkInputCard.value,
