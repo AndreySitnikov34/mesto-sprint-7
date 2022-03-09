@@ -55,7 +55,6 @@ function handleAvatarPopup(evt) {
   evt.preventDefault(); // Не открывать в новом окне
   const buttonElement = popupFormAvatar.querySelector(".button"); //Сделать кнопку переменной
   buttonElement.textContent = "Сохранение..."; //Поменять значение в кнопке
-  userPic.src = avatarLink.value; //Заменить значение src (взять из инпута)
   updateAvatar({
     avatar: avatarLink.value,
   })

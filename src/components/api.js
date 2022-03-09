@@ -107,7 +107,7 @@ export const updateAvatar = ({ avatar }) => {
     headers: config.headers,
     body: JSON.stringify({ avatar }),
   })
-    .then((res) => parsResponse(res))
+    .then((res) => parseResponse(res))
     .catch((err) => {
       console.log(err);
       return Promise.reject(err);
