@@ -17,12 +17,7 @@ const parseResponse = (res) => {
 export const getCards = () => {
   return fetch(`${config.url}/cards`, {
     headers: config.headers,
-  })
-    .then((res) => parseResponse(res))
-    .catch((err) => {
-      console.log(err);
-      return Promise.reject(err);
-    });
+  }).then((res) => parseResponse(res));
 };
 //Добавление своей карточки
 export const postCard = (card) => {
@@ -33,59 +28,34 @@ export const postCard = (card) => {
       name: card.name,
       link: card.link,
     }),
-  })
-    .then((res) => parseResponse(res))
-    .catch((err) => {
-      console.log(err);
-      return Promise.reject(err);
-    });
+  }).then((res) => parseResponse(res));
 };
 //Удаление карточки
 export const deleteCard = (cardId) => {
   return fetch(`${config.url}/cards/${cardId}`, {
     method: "DELETE",
     headers: config.headers,
-  })
-    .then((res) => parseResponse(res))
-    .catch((err) => {
-      console.log(err);
-      return Promise.reject(err);
-    });
+  }).then((res) => parseResponse(res));
 };
 //Добавление лайка
 export const addLike = (cardId) => {
   return fetch(`${config.url}/cards/likes/${cardId}`, {
     method: "PUT",
     headers: config.headers,
-  })
-    .then((res) => parseResponse(res))
-    .catch((err) => {
-      console.log(err);
-      return Promise.reject(err);
-    });
+  }).then((res) => parseResponse(res));
 };
 //Удаление лайка
 export const deleteLike = (cardId) => {
   return fetch(`${config.url}/cards/likes/${cardId}`, {
     method: "DELETE",
     headers: config.headers,
-  })
-    .then((res) => parseResponse(res))
-    .catch((err) => {
-      console.log(err);
-      return Promise.reject(err);
-    });
+  }).then((res) => parseResponse(res));
 };
 //Получение данных о пользователе
 export const getUser = () => {
   return fetch(`${config.url}/users/me`, {
     headers: config.headers,
-  })
-    .then((res) => parseResponse(res))
-    .catch((err) => {
-      console.log(err);
-      return Promise.reject(err);
-    });
+  }).then((res) => parseResponse(res));
 };
 //Добавление пользователя
 export const updateUser = ({ name, about }) => {
@@ -93,12 +63,7 @@ export const updateUser = ({ name, about }) => {
     method: "PATCH",
     headers: config.headers,
     body: JSON.stringify({ name, about }),
-  })
-    .then((res) => parseResponse(res))
-    .catch((err) => {
-      console.log(err);
-      return Promise.reject(err);
-    });
+  }).then((res) => parseResponse(res));
 };
 //Смена аватарки
 export const updateAvatar = ({ avatar }) => {
@@ -106,12 +71,7 @@ export const updateAvatar = ({ avatar }) => {
     method: "PATCH",
     headers: config.headers,
     body: JSON.stringify({ avatar }),
-  })
-    .then((res) => parseResponse(res))
-    .catch((err) => {
-      console.log(err);
-      return Promise.reject(err);
-    });
+  }).then((res) => parseResponse(res));
 };
 //Смена аватарки (асинхронной функцией) как подсказывает VSCode
 // export const updateAvatar = async () => {

@@ -41,6 +41,8 @@ import {
   updateUser,
 } from "../components/api.js";
 
+import { createCard, addCard, toggleLikes } from "../components/card.js";
+
 import { addNewCard, likeCard } from "../components/index.js";
 
 function openAvatarPopup() {
@@ -53,44 +55,42 @@ function openAvatarPopup() {
 function handleAvatarPopup(evt) {
   console.log("start handleAvatarPopup");
   evt.preventDefault(); // Не открывать в новом окне
-  const buttonElement = popupFormAvatar.querySelector(".button"); //Сделать кнопку переменной
-  buttonElement.textContent = "Сохранение..."; //Поменять значение в кнопке
+  avatarSubmitButton.textContent = "Сохранение..."; //Поменять значение в кнопке
   updateAvatar({
     avatar: avatarLink.value,
   })
     .then((res) => {
       console.log("Аватар изменён", res);
       userPic.src = avatarLink.value; //Заменить значение src (взять из инпута)
+      closePopup(popupFormAvatar);
     })
     .catch((err) => {
       console.log("Ошибка смены аватара", err.message);
     })
     .finally(() => {
-      buttonElement.textContent = "Сохранить"; //Поменять значение в кнопке обратно
+      avatarSubmitButton.textContent = "Сохранить"; //Поменять значение в кнопке обратно
     });
-  closePopup(popupFormAvatar);
 }
 
 //Функция обработки профиля юзера после submit
 function handleSubmitProfile(evt) {
   console.log("start handleSubmitProfile");
   evt.preventDefault();
-  const buttonElement = cardFormPopup.querySelector(".button");
-  buttonElement.textContent = "Сохранение...";
+  avatarSubmitButton.textContent = "Сохранение...";
   updateUser({
     name: formUserNameInput.value,
     about: formUserAboutInput.value,
   })
     .then((res) => {
-      userName.textContent = formUserNameInput.value; // Присвоить name значение из формы
-      userAbout.textContent = formUserAboutInput.value; // Присвоить about значение из формы
+      userName.textContent = res.name; // Присвоить name значение из формы
+      userAbout.textContent = res.about; // Присвоить about значение из формы
       closePopup(popupFormUser); // Закрыть попап
     })
     .catch((err) => {
       console.log("Ошибка редактирования профиля", err.message);
     })
     .finally(() => {
-      buttonElement.textContent = "Сохранить";
+      avatarSubmitButton.textContent = "Сохранить";
     });
 }
 
@@ -101,13 +101,20 @@ function openProfilePopup() {
 // Функция обработки создания новой карточки
 function handleCardFormSubmit(evt) {
   evt.preventDefault();
-  addNewCard({
+  postCard({
     name: titleInputCard.value,
     link: linkInputCard.value,
-  });
-  evt.target.reset();
-  closePopup(cardFormPopup);
-  toggleButtonState(cardInputs, cardSubmitButton, "form__submit_inactive");
+  })
+    .then((res) => {
+      console.log("Карточка добавлена", res);
+      evt.target.reset();
+      toggleButtonState(cardInputs, cardSubmitButton, "form__submit_inactive");
+      cards.prepend(createCard(res));
+      closePopup(cardFormPopup); //Закрыть попап
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 function openCardPopup() {

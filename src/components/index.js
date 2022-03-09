@@ -19,6 +19,7 @@ import {
 } from "../components/card.js";
 
 import {
+  avatarSubmitButton,
   openAvatarPopup,
   handleAvatarPopup,
   handleSubmitProfile,
@@ -88,10 +89,10 @@ document
   .querySelector(".user__info-edit-button")
   .addEventListener("click", openProfilePopup);
 //Слушатели сабмитов
-// popupFormAvatar.addEventListener("submit", updateUserPhoto);
+popupFormAvatar.addEventListener("submit", handleAvatarPopup);
 popupFormUser.addEventListener("submit", handleSubmitProfile);
 cardFormPopup.addEventListener("submit", handleCardFormSubmit);
-formElement.addEventListener("submit", handleAvatarPopup);
+// formElement.addEventListener("submit", handleAvatarPopup);
 //Изъятие карточек у сервера
 const renderCards = (userId) => {
   // console.log("render cards");
@@ -109,7 +110,7 @@ const renderCards = (userId) => {
 //Добавление своей карточки на сервер
 export function addNewCard(newCard) {
   postCard(newCard).then((res) => {
-    console.log(res);
+    console.log("addNewCard Содержимое карточки", newCard, res);
     const contentCard = createCard(res);
     cards.prepend(contentCard);
   });
@@ -129,34 +130,16 @@ getUser()
   .catch((err) => {
     console.log("Ошибка загрузки данных о пользователе", err);
   });
-
-// //Смена аватарки
-// export function updateUserPhoto(evt) {
-//   // evt.preventDefault();
-//   const buttonElement = popupFormAvatar.querySelector(".button");
-//   buttonElement.textContent = "Сохранение...";
-//   updateAvatar({
-//     avatar: avatarLink.value,
+//Пробую применить Promise.all
+// Promise.all([getUser(), getCards()])
+//   .then(([userData, cards]) => {
+//     const user = userData; // тут установка данных пользователя
+//     const cards = cardsData; // и тут отрисовка карточек
+//     userName.textContent = user.name;
+//     userAbout.textContent = user.about;
+//     userPic.src = user.avatar;
+//     renderCards(cards, user);
 //   })
-//     .then((res) => {
-//       userPic.src = avatarLink.value;
-//       closePopup(popupFormAvatar);
-//     })
-//     .catch((err) => {
-//       console.log("Ошибка смены аватара", err.message);
-//     })
-//     .finally(() => {
-//       buttonElement.textContent = "Сохранить";
-//     });
-// }
-//Информация о пользователе
-// console.log(
-//   fetch(`https://nomoreparties.co/v1/plus-cohort7/users/me`, {
-//     headers: {
-//       authorization: "01124a9d-ad91-4991-aee6-270006a314f8",
-//       "Content-Type": "application/json",
-//     },
-//   })
-//     .then((res) => res.json())
-//     .then((data) => console.log(data))
-// );
+//   .catch((err) => {
+//     console.log("Ошибка загрузки данных", err); // тут ловим ошибку
+//   });

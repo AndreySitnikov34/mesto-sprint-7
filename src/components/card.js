@@ -70,13 +70,14 @@ export function createCard(card, userId) {
 
   //Функция добавления/удаления лайка
   function likeCard() {
-    let length = Number(likeCounter.textContent);
+    // let length = Number(likeCounter.textContent);
     if (!cardLike.classList.contains("card__heart_liked")) {
       addLike(card._id)
         .then((card) => {
           console.log(card._id);
           cardLike.classList.add("card__heart_liked");
-          likeCounter.textContent = length + 1;
+          // likeCounter.textContent = length + 1;
+          likeCounter.textContent = card.likes.length;
         })
         .catch((err) => {
           console.log("Ошибка добавления лайка", err.message);
@@ -85,7 +86,7 @@ export function createCard(card, userId) {
       deleteLike(card._id)
         .then((card) => {
           cardLike.classList.remove("card__heart_liked");
-          likeCounter.textContent = length - 1;
+          // likeCounter.textContent = length - 1;
         })
         .catch((err) => {
           console.log("Ошибка удаления лайка", err.message);
