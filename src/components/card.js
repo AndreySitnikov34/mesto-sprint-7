@@ -28,8 +28,6 @@ import {
   openImagePopup,
 } from "../components/modal.js";
 
-import { addNewCard } from "../components/index.js";
-
 import {
   config,
   parseResponce,
@@ -44,14 +42,19 @@ import {
 } from "../components/api.js";
 //Функция создания новой карточки
 export function createCard(card, userId) {
-  // console.log("Содержимое карточек", card);
+  // console.log("Содержимое карточек", card, userId);
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
   const cardImage = cardElement.querySelector(".card__img");
   const cardLike = cardElement.querySelector(".card__heart");
   const cardDelete = cardElement.querySelector(".card__del");
   const cardLocation = cardElement.querySelector(".card__location");
   const likeCounter = cardElement.querySelector(".card__heart-count");
-  //Показать ведро только на своих карточках
+  cardLocation.textContent = card.name;
+  cardImage.src = card.link;
+  cardImage.alt = card.name;
+  likeCounter.textContent = card.likes.length;
+
+  // //Показать корзину только на своих карточках
   if (userId !== card.owner._id) {
     // console.log("userId", userId);
     cardDelete.remove();
@@ -62,12 +65,6 @@ export function createCard(card, userId) {
       cardLike.classList.add("card__heart_liked");
     }
   });
-
-  cardLocation.textContent = card.name;
-  cardImage.src = card.link;
-  cardImage.alt = card.name;
-  likeCounter.textContent = card.likes.length;
-
   //Функция добавления/удаления лайка
   function likeCard() {
     // let length = Number(likeCounter.textContent);

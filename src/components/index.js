@@ -107,15 +107,6 @@ const renderCards = (userId) => {
       console.log("Ошибка загрузки контента:", err.message);
     });
 };
-//Добавление своей карточки на сервер
-export function addNewCard(newCard) {
-  postCard(newCard).then((res) => {
-    console.log("addNewCard Содержимое карточки", newCard, res);
-    const contentCard = createCard(res);
-    cards.prepend(contentCard);
-  });
-}
-
 //Получение информации о юзере при загрузке
 getUser()
   .then((data) => {

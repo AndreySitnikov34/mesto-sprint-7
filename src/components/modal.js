@@ -43,14 +43,13 @@ import {
 
 import { createCard, addCard, toggleLikes } from "../components/card.js";
 
-import { addNewCard, likeCard } from "../components/index.js";
+import { likeCard } from "../components/index.js";
 
 function openAvatarPopup() {
   avatarLink.value = ""; //Сбросить значения input
   openPopup(popupFormAvatar);
   toggleButtonState(cardInputs, avatarSubmitButton, "form__submit_inactive");
 }
-
 // Функция обработки смены аватара
 function handleAvatarPopup(evt) {
   console.log("start handleAvatarPopup");
@@ -71,7 +70,6 @@ function handleAvatarPopup(evt) {
       avatarSubmitButton.textContent = "Сохранить"; //Поменять значение в кнопке обратно
     });
 }
-
 //Функция обработки профиля юзера после submit
 function handleSubmitProfile(evt) {
   console.log("start handleSubmitProfile");
@@ -97,7 +95,6 @@ function handleSubmitProfile(evt) {
 function openProfilePopup() {
   openPopup(popupFormUser);
 }
-
 // Функция обработки создания новой карточки
 function handleCardFormSubmit(evt) {
   evt.preventDefault();
@@ -109,7 +106,7 @@ function handleCardFormSubmit(evt) {
       console.log("Карточка добавлена", res);
       evt.target.reset();
       toggleButtonState(cardInputs, cardSubmitButton, "form__submit_inactive");
-      cards.prepend(createCard(res));
+      cards.prepend(createCard(res, res.owner._id));
       closePopup(cardFormPopup); //Закрыть попап
     })
     .catch((err) => {
