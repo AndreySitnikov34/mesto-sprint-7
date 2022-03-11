@@ -3,6 +3,7 @@ const avatarSubmitButton = popupFormAvatar.querySelector(".button-avatar");
 const cardSubmitButton = cardFormPopup.querySelector(".form__submit");
 
 import {
+  formElement,
   popupFormUser,
   popupFormAvatar,
   avatarLink,
@@ -26,45 +27,95 @@ import { hasInvalidInput, toggleButtonState } from "../components/validate.js";
 import {
   openPopup,
   closePopup,
-  popups,
-  closePopEsc,
+  // popups,
+  // closePopEsc,
 } from "../components/utils.js";
+
+import {
+  addLike,
+  deleteCard,
+  deleteLike,
+  getCards,
+  postCard,
+  updateAvatar,
+  updateUser,
+} from "../components/api.js";
+
+import { createCard, addCard, toggleLikes } from "../components/card.js";
 
 function openAvatarPopup() {
   avatarLink.value = ""; //Сбросить значения input
   openPopup(popupFormAvatar);
   toggleButtonState(cardInputs, avatarSubmitButton, "form__submit_inactive");
 }
-
 // Функция обработки смены аватара
 function handleAvatarPopup(evt) {
+  console.log("start handleAvatarPopup");
   evt.preventDefault(); // Не открывать в новом окне
-  userPic.src = avatarLink.value; // Заменить значение src
-  closePopup(popupFormAvatar);
+  avatarSubmitButton.textContent = "Сохранение..."; //Поменять значение в кнопке
+  updateAvatar({
+    avatar: avatarLink.value,
+  })
+    .then((res) => {
+      console.log("Аватар изменён", res);
+      userPic.src = avatarLink.value; //Заменить значение src (взять из инпута)
+      closePopup(popupFormAvatar);
+    })
+    .catch((err) => {
+      console.log("Ошибка смены аватара", err.message);
+    })
+    .finally(() => {
+      avatarSubmitButton.textContent = "Сохранить"; //Поменять значение в кнопке обратно
+    });
 }
-
 //Функция обработки профиля юзера после submit
 function handleSubmitProfile(evt) {
-  evt.preventDefault(); // Не открывать в новом окне
-  userName.textContent = formUserNameInput.value; // Присвоить name значение из формы
-  userAbout.textContent = formUserAboutInput.value; // Присвоить about значение из формы
-  closePopup(popupFormUser); // Закрыть попап
+  console.log("start handleSubmitProfile");
+  evt.preventDefault();
+  avatarSubmitButton.textContent = "Сохранение...";
+  updateUser({
+    name: formUserNameInput.value,
+    about: formUserAboutInput.value,
+  })
+    .then((res) => {
+      userName.textContent = res.name; // Присвоить name значение из формы
+      userAbout.textContent = res.about; // Присвоить about значение из формы
+      closePopup(popupFormUser); // Закрыть попап
+    })
+    .catch((err) => {
+      console.log("Ошибка редактирования профиля", err.message);
+    })
+    .finally(() => {
+      avatarSubmitButton.textContent = "Сохранить";
+    });
 }
-
+// Функция открытия попапа редактирования профиля юзера
 function openProfilePopup() {
+  formUserNameInput.value = userName.textContent;
+  formUserAboutInput.value = userAbout.textContent;
   openPopup(popupFormUser);
 }
-
 // Функция обработки создания новой карточки
 function handleCardFormSubmit(evt) {
   evt.preventDefault();
-  addCard({
+  cardSubmitButton.textContent = "Сохранение..."; //Поменять значение в кнопке
+  postCard({
     name: titleInputCard.value,
     link: linkInputCard.value,
-  });
-  evt.target.reset();
-  closePopup(cardFormPopup);
-  toggleButtonState(cardInputs, cardSubmitButton, "form__submit_inactive");
+  })
+    .then((res) => {
+      console.log("Карточка добавлена", res);
+      evt.target.reset();
+      toggleButtonState(cardInputs, cardSubmitButton, "form__submit_inactive");
+      cards.prepend(createCard(res, res.owner._id));
+      closePopup(cardFormPopup); //Закрыть попап
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      cardSubmitButton.textContent = "Сохранить"; //Поменять значение в кнопке обратно
+    });
 }
 
 function openCardPopup() {
@@ -78,54 +129,6 @@ function openImagePopup(evt) {
   imageOpen.alt = evt.target.alt;
   signImage.textContent = evt.target.alt;
   openPopup(popupImage);
-}
-
-//Функция создания новой карточки
-function createCard(card) {
-  const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
-  const cardImage = cardElement.querySelector(".card__img");
-  const cardLike = cardElement.querySelector(".card__heart");
-  const cardDelete = cardElement.querySelector(".card__del");
-  const cardLocation = cardElement.querySelector(".card__location");
-  cardLocation.textContent = card.name;
-  cardImage.src = card.link;
-  cardImage.alt = card.name;
-  cardImage.addEventListener("click", openImagePopup);
-  cardLike.addEventListener("click", toggleLikes);
-  cardDelete.addEventListener("click", removeCard);
-  return cardElement;
-}
-const addCard = (card) => {
-  const contentCard = createCard(card);
-  cards.prepend(contentCard);
-};
-
-//Функция удаления карточки
-function removeCard(evt) {
-  evt.target.closest(".card").remove();
-}
-
-//Или написать функцию прямо внутри, сразу после слушателя. Кажется, так красивее
-// function createCard(card) {
-//   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
-//   cardElement.querySelector(".card__location").textContent = card.name;
-//   cardElement.querySelector(".card__img").src = card.link;
-//   cardElement.querySelector(".card__img").alt = card.name;
-//   cardElement
-//     .querySelector(".card__img")
-//     .addEventListener("click", openImagePopup);
-//   cardElement
-//     .querySelector(".card__heart")
-//     .addEventListener("click", toggleLikes);
-//   cardElement.querySelector(".card__del").addEventListener("click", () => {
-//     cardElement.remove();
-//   });
-//   return cardElement;
-// }
-
-//Функция добавления/удаления лайка
-function toggleLikes(evt) {
-  evt.target.classList.toggle("card__heart_liked");
 }
 
 //Всё можно экспортнуть скопом (легче будет копировать в импорт;))))
@@ -153,8 +156,4 @@ export {
   handleCardFormSubmit,
   openCardPopup,
   openImagePopup,
-  createCard,
-  addCard,
-  removeCard,
-  toggleLikes,
 };

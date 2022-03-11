@@ -1,17 +1,7 @@
 import "./../index.css";
-import {
-  showInputError,
-  hideInputError,
-  checkInputValidity,
-  isValid,
-  hasInvalidInput,
-  toggleButtonState,
-  setEventListeners,
-  clearErrorMessage,
-  enableValidation,
-} from "../components/validate.js";
+import { enableValidation } from "../components/validate.js";
 
-import { initialCards } from "../components/card.js";
+import { addCard } from "../components/card.js";
 
 import {
   openAvatarPopup,
@@ -20,38 +10,18 @@ import {
   openProfilePopup,
   handleCardFormSubmit,
   openCardPopup,
-  openImagePopup,
-  createCard,
-  addCard,
-  removeCard,
-  toggleLikes,
 } from "../components/modal.js";
 
 import {
   popupFormUser,
   popupFormAvatar,
-  avatarLink,
-  formUserNameInput,
-  formUserAboutInput,
   userName,
   userAbout,
   userPic,
-  cardTemplate,
   cardFormPopup,
-  titleInputCard,
-  linkInputCard,
-  cards,
-  popupImage,
-  imageOpen,
-  signImage,
 } from "../components/constants.js";
 
-import {
-  openPopup,
-  closePopup,
-  popups,
-  closePopEsc,
-} from "../components/utils.js";
+import { getCards, getUser } from "../components/api.js";
 
 //Включение валидации всех форм
 enableValidation({
@@ -62,13 +32,7 @@ enableValidation({
   inputErrorClass: "form__input-error",
   errorClass: "form__input-error_active",
 });
-
-function setContent() {
-  initialCards.forEach((content) => addCard(content));
-}
-
-setContent();
-
+//Слушатели кликов
 document
   .querySelector(".user__overlay")
   .addEventListener("click", openAvatarPopup);
@@ -78,7 +42,49 @@ document
 document
   .querySelector(".user__info-edit-button")
   .addEventListener("click", openProfilePopup);
-
+//Слушатели сабмитов
 popupFormAvatar.addEventListener("submit", handleAvatarPopup);
 popupFormUser.addEventListener("submit", handleSubmitProfile);
 cardFormPopup.addEventListener("submit", handleCardFormSubmit);
+// formElement.addEventListener("submit", handleAvatarPopup);
+//Изъятие карточек у сервера
+const renderCards = (userId) => {
+  // console.log("render cards");
+  getCards()
+    .then((data) => {
+      // console.log("then");
+      data.forEach((card) => {
+        addCard(card, userId);
+      });
+    })
+    .catch((err) => {
+      console.log("Ошибка загрузки контента:", err.message);
+    });
+};
+//Получение информации о юзере при загрузке
+getUser()
+  .then((data) => {
+    const userId = data._id;
+    console.log("Информация по юзеру", data);
+    userName.textContent = data.name;
+    userAbout.textContent = data.about;
+    userPic.src = data.avatar;
+
+    renderCards(userId);
+  })
+  .catch((err) => {
+    console.log("Ошибка загрузки данных о пользователе", err);
+  });
+//Пробую применить Promise.all
+// Promise.all([getUser(), getCards()])
+//   .then(([userData, cards]) => {
+//     const user = userData; // тут установка данных пользователя
+//     const cards = cardsData; // и тут отрисовка карточек
+//     userName.textContent = user.name;
+//     userAbout.textContent = user.about;
+//     userPic.src = user.avatar;
+//     renderCards(cards, user);
+//   })
+//   .catch((err) => {
+//     console.log("Ошибка загрузки данных", err); // тут ловим ошибку
+//   });

@@ -7,7 +7,7 @@
     border-radius: 50%;
     margin: 0;
      /*background-image: url(../../../images/JCousteau.png);*/
-    background-size: cover;
+    object-fit: cover;
     box-shadow: 0 0 2px white;
 }
 

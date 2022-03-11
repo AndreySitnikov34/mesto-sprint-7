@@ -1,38 +1,113 @@
-export const initialCards = [
-  {
-    name: "Санкт-Петербург",
-    link: "https://images.unsplash.com/photo-1597533849860-5a04a21a7b3b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-  },
-  {
-    name: "МОСКВА",
-    link: "https://images.unsplash.com/photo-1613327345946-551b8ecf2afe?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-  },
-  {
-    name: "Волгоград",
-    link: "https://images.unsplash.com/photo-1583917096279-3eb6e3ea978f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2564&q=80",
-  },
-  {
-    name: "Архыз",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg",
-  },
-  {
-    name: "Челябинская область",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg",
-  },
-  {
-    name: "Иваново",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg",
-  },
-  {
-    name: "Камчатка",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg",
-  },
-  {
-    name: "Холмогорский район",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg",
-  },
-  {
-    name: "Байкал",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
-  },
-];
+import {
+  formElement,
+  popupFormUser,
+  popupFormAvatar,
+  avatarLink,
+  formUserNameInput,
+  formUserAboutInput,
+  userName,
+  userAbout,
+  userPic,
+  cardTemplate,
+  cardFormPopup,
+  titleInputCard,
+  linkInputCard,
+  cards,
+  popupImage,
+  imageOpen,
+  signImage,
+} from "../components/constants.js";
+
+import {
+  openAvatarPopup,
+  handleAvatarPopup,
+  handleSubmitProfile,
+  openProfilePopup,
+  handleCardFormSubmit,
+  openCardPopup,
+  openImagePopup,
+} from "../components/modal.js";
+
+import {
+  config,
+  parseResponce,
+  getCards,
+  postCard,
+  deleteCard,
+  addLike,
+  deleteLike,
+  getUser,
+  updateUser,
+  updateAvatar,
+} from "../components/api.js";
+//Функция создания новой карточки
+export function createCard(card, userId) {
+  // console.log("Содержимое карточек", card);
+  const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
+  const cardImage = cardElement.querySelector(".card__img");
+  const cardLike = cardElement.querySelector(".card__heart");
+  const cardDelete = cardElement.querySelector(".card__del");
+  const cardLocation = cardElement.querySelector(".card__location");
+  const likeCounter = cardElement.querySelector(".card__heart-count");
+  cardLocation.textContent = card.name;
+  cardImage.src = card.link;
+  cardImage.alt = card.name;
+  likeCounter.textContent = card.likes.length;
+
+  // //Показать ведро только на своих карточках
+  if (userId !== card.owner._id) {
+    // console.log("userId", userId);
+    cardDelete.remove();
+  }
+  //Покарсить свои лайки
+  card.likes.forEach((user) => {
+    if (user._id === userId) {
+      cardLike.classList.add("card__heart_liked");
+    }
+  });
+  //Функция добавления/удаления лайка
+  function likeCard() {
+    // let length = Number(likeCounter.textContent);
+    if (!cardLike.classList.contains("card__heart_liked")) {
+      addLike(card._id)
+        .then((card) => {
+          console.log(card._id);
+          cardLike.classList.add("card__heart_liked");
+          // likeCounter.textContent = length + 1;
+          likeCounter.textContent = card.likes.length;
+        })
+        .catch((err) => {
+          console.log("Ошибка добавления лайка", err.message);
+        });
+    } else {
+      deleteLike(card._id)
+        .then((card) => {
+          cardLike.classList.remove("card__heart_liked");
+          // likeCounter.textContent = length - 1;
+          likeCounter.textContent = card.likes.length;
+        })
+        .catch((err) => {
+          console.log("Ошибка удаления лайка", err.message);
+        });
+    }
+  }
+  //Слушатели внутри функции
+  cardImage.addEventListener("click", openImagePopup);
+  cardLike.addEventListener("click", likeCard);
+  cardDelete.addEventListener("click", (evt) => {
+    deleteCard(card._id) //Удаление карточки по id
+      .then((card) => {
+        evt.target.closest(".card").remove();
+      })
+      .catch((err) => {
+        console.log("Ошибка удаления карточки", err.message);
+      });
+  });
+  return cardElement;
+}
+//Функция добавления карточки на сервер
+export const addCard = (card, userId) => {
+  // console.log("Содержимое карточки", card);
+  const contentCard = createCard(card, userId);
+  cards.append(contentCard);
+};

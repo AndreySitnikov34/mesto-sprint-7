@@ -19,7 +19,7 @@
 @import url(./blocks/user/__add/user__add.css);
 @import url(./blocks/card/__add-button/card__add-button.css);
 @import url(./blocks/card/__del/card__del.css);
-@import url(./blocks/content/content.css);
+@import url(./blocks/cards/cards.css);
 @import url(./blocks/card/card.css);
 @import url(./blocks/card/__img/card__img.css);
 @import url(./blocks/card/__subscribe/card__subscribe.css);
