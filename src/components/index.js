@@ -1,73 +1,66 @@
 import "./../index.css";
 import {
-  showInputError,
-  hideInputError,
-  checkInputValidity,
-  isValid,
-  hasInvalidInput,
-  toggleButtonState,
-  setEventListeners,
-  clearErrorMessage,
+  // showInputError,
+  // hideInputError,
+  // checkInputValidity,
+  // isValid,
+  // hasInvalidInput,
+  // toggleButtonState,
+  // setEventListeners,
+  // clearErrorMessage,
   enableValidation,
 } from "../components/validate.js";
 
 import {
-  createCard,
+  // createCard,
   addCard,
-  toggleLikes,
-  likeCard,
+  // toggleLikes,
+  // likeCard,
 } from "../components/card.js";
 
 import {
-  avatarSubmitButton,
+  // avatarSubmitButton,
   openAvatarPopup,
   handleAvatarPopup,
   handleSubmitProfile,
   openProfilePopup,
   handleCardFormSubmit,
   openCardPopup,
-  openImagePopup,
+  // openImagePopup,
 } from "../components/modal.js";
 
 import {
-  formElement,
+  // formElement,
   popupFormUser,
   popupFormAvatar,
-  avatarLink,
-  formUserNameInput,
-  formUserAboutInput,
+  // avatarLink,
+  // formUserNameInput,
+  // formUserAboutInput,
   userName,
   userAbout,
   userPic,
-  cardTemplate,
+  // cardTemplate,
   cardFormPopup,
-  titleInputCard,
-  linkInputCard,
-  cards,
-  popupImage,
-  imageOpen,
-  signImage,
+  // titleInputCard,
+  // linkInputCard,
+  // cards,
+  // popupImage,
+  // imageOpen,
+  // signImage,
 } from "../components/constants.js";
 
 import {
-  config,
-  parseResponce,
+  // config,
+  // parseResponce,
   getCards,
-  postCard,
-  deleteCard,
-  addLike,
-  deleteLike,
+  // postCard,
+  // deleteCard,
+  // addLike,
+  // deleteLike,
   getUser,
-  updateUser,
-  updateAvatar,
+  // updateUser,
+  // updateAvatar,
 } from "../components/api.js";
-
-import {
-  openPopup,
-  closePopup,
-  popups,
-  closePopEsc,
-} from "../components/utils.js";
 
 //Включение валидации всех форм
 enableValidation({

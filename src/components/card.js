@@ -42,7 +42,7 @@ import {
 } from "../components/api.js";
 //Функция создания новой карточки
 export function createCard(card, userId) {
-  // console.log("Содержимое карточек", card, userId);
+  // console.log("Содержимое карточек", card);
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
   const cardImage = cardElement.querySelector(".card__img");
   const cardLike = cardElement.querySelector(".card__heart");
@@ -84,6 +84,7 @@ export function createCard(card, userId) {
         .then((card) => {
           cardLike.classList.remove("card__heart_liked");
           // likeCounter.textContent = length - 1;
+          likeCounter.textContent = card.likes.length;
         })
         .catch((err) => {
           console.log("Ошибка удаления лайка", err.message);

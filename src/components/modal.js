@@ -27,8 +27,8 @@ import { hasInvalidInput, toggleButtonState } from "../components/validate.js";
 import {
   openPopup,
   closePopup,
-  popups,
-  closePopEsc,
+  // popups,
+  // closePopEsc,
 } from "../components/utils.js";
 
 import {
@@ -43,7 +43,7 @@ import {
 
 import { createCard, addCard, toggleLikes } from "../components/card.js";
 
-import { likeCard } from "../components/index.js";
+// import { likeCard } from "../components/index.js";
 
 function openAvatarPopup() {
   avatarLink.value = ""; //Сбросить значения input
@@ -93,11 +93,14 @@ function handleSubmitProfile(evt) {
 }
 
 function openProfilePopup() {
+  formUserNameInput.value = userName.textContent;
+  formUserAboutInput.value = userAbout.textContent;
   openPopup(popupFormUser);
 }
 // Функция обработки создания новой карточки
 function handleCardFormSubmit(evt) {
   evt.preventDefault();
+  cardSubmitButton.textContent = "Сохранение..."; //Поменять значение в кнопке
   postCard({
     name: titleInputCard.value,
     link: linkInputCard.value,
@@ -111,6 +114,9 @@ function handleCardFormSubmit(evt) {
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      cardSubmitButton.textContent = "Сохранить"; //Поменять значение в кнопке обратно
     });
 }
 
