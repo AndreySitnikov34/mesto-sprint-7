@@ -43,8 +43,6 @@ import {
 
 import { createCard, addCard, toggleLikes } from "../components/card.js";
 
-// import { likeCard } from "../components/index.js";
-
 function openAvatarPopup() {
   avatarLink.value = ""; //Сбросить значения input
   openPopup(popupFormAvatar);
@@ -91,7 +89,7 @@ function handleSubmitProfile(evt) {
       avatarSubmitButton.textContent = "Сохранить";
     });
 }
-
+// Функция открытия попапа редактирования профиля юзера
 function openProfilePopup() {
   formUserNameInput.value = userName.textContent;
   formUserAboutInput.value = userAbout.textContent;

@@ -1,66 +1,27 @@
 import "./../index.css";
-import {
-  // showInputError,
-  // hideInputError,
-  // checkInputValidity,
-  // isValid,
-  // hasInvalidInput,
-  // toggleButtonState,
-  // setEventListeners,
-  // clearErrorMessage,
-  enableValidation,
-} from "../components/validate.js";
+import { enableValidation } from "../components/validate.js";
+
+import { addCard } from "../components/card.js";
 
 import {
-  // createCard,
-  addCard,
-  // toggleLikes,
-  // likeCard,
-} from "../components/card.js";
-
-import {
-  // avatarSubmitButton,
   openAvatarPopup,
   handleAvatarPopup,
   handleSubmitProfile,
   openProfilePopup,
   handleCardFormSubmit,
   openCardPopup,
-  // openImagePopup,
 } from "../components/modal.js";
 
 import {
-  // formElement,
   popupFormUser,
   popupFormAvatar,
-  // avatarLink,
-  // formUserNameInput,
-  // formUserAboutInput,
   userName,
   userAbout,
   userPic,
-  // cardTemplate,
   cardFormPopup,
-  // titleInputCard,
-  // linkInputCard,
-  // cards,
-  // popupImage,
-  // imageOpen,
-  // signImage,
 } from "../components/constants.js";
 
-import {
-  // config,
-  // parseResponce,
-  getCards,
-  // postCard,
-  // deleteCard,
-  // addLike,
-  // deleteLike,
-  getUser,
-  // updateUser,
-  // updateAvatar,
-} from "../components/api.js";
+import { getCards, getUser } from "../components/api.js";
 
 //Включение валидации всех форм
 enableValidation({

@@ -54,7 +54,7 @@ export function createCard(card, userId) {
   cardImage.alt = card.name;
   likeCounter.textContent = card.likes.length;
 
-  // //Показать корзину только на своих карточках
+  // //Показать ведро только на своих карточках
   if (userId !== card.owner._id) {
     // console.log("userId", userId);
     cardDelete.remove();
